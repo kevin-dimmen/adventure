@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "adventure"
+version = "0.0.1"
+description = "A game about adventuring!"
+authors = ["Kevin Dimmen <kevdimmen@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/kevin-dimmen/adventure"
+packages = [{include = "adventure"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pygame = "^2.6.1"
+
+[tool.poetry.group.lint]
+
+[tool.poetry.group.lint.dependencies]
+black = "*"
+isort = "*"
+
+[tool.black]
+line-length = 120
+target-version = ['py310']
+exclude = '(\.git|\.eggs)'
+
+[tool.isort]
+profile = "black"
+line_length = 120
+balanced_wrapping = true
+force_single_line = true
+
+[tool.poetry.scripts]
+game = "adventure.game:main"
+
+
