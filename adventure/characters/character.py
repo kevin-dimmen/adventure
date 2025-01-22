@@ -50,22 +50,20 @@ class Character(Entity):
         self.position += velocity * self.movement_speed * dt
 
     def move_backwards(self, dt) -> None:
-        velocity = pygame.Vector2(0, 1).rotate(self.rotation)
-        self.position += velocity * self.movement_speed / 2 * dt * -1
+        velocity = pygame.Vector2(0, 1).rotate(self.rotation - 180)
+        self.position += velocity * self.movement_speed / 2 * dt
 
     def move_left(self, dt) -> None:
-        return  # TODO figure out strafe logic
-        velocity = pygame.Vector2(0, 1).rotate(self.rotation)
-        self.position += velocity * self.movement_speed / 2 * dt * -1
+        velocity = pygame.Vector2(0, 1).rotate(self.rotation + 90)
+        self.position += velocity * self.movement_speed / 1.5 * dt
 
     def move_right(self, dt) -> None:
-        return  # TODO figure out strafe logic
-        velocity = pygame.Vector2(0, 1).rotate(self.rotation)
-        self.position += velocity * self.movement_speed / 2 * dt * -1
+        velocity = pygame.Vector2(0, 1).rotate(self.rotation - 90)
+        self.position += velocity * self.movement_speed / 1.5 * dt
 
-    def shoot(self, dt: int) -> None:
+    def use_weapon(self, dt: int) -> None:
         if self.weapon:
-            self.weapon.shoot()
+            self.weapon.use()
 
     def is_facing_character(self, character: Character) -> bool:
         """Check if the current character is facing another character."""

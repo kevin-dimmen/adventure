@@ -11,6 +11,7 @@ from adventure.characters.enemy import EnemySpawner
 from adventure.characters.player import Player
 from adventure.engine import Engine
 from adventure.projectiles.projectile import Projectile
+from adventure.hud.hud_elements import HealthBar
 
 
 class MainAdventure(Engine):
@@ -22,11 +23,14 @@ class MainAdventure(Engine):
         self.drawn_objects = None
         self.projectile_objects = None
         self.enemy_objects = None
+        self.hud_elements = None
         self.player = None
+        self.health_bar = None
 
     def engine_setup(self) -> None:
         self.setup_groups()
         self.player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        self.health_bar = HealthBar(player=self.player)
         EnemySpawner(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     def setup_groups(self) -> None:
@@ -34,22 +38,16 @@ class MainAdventure(Engine):
         self.drawn_objects = pygame.sprite.Group()
         self.projectile_objects = pygame.sprite.Group()
         self.enemy_objects = pygame.sprite.Group()
+        self.hud_elements = pygame.sprite.Group()
         Player.containers = (self.update_objects, self.drawn_objects)
         Projectile.containers = (self.update_objects, self.drawn_objects, self.projectile_objects)
         Enemy.containers = (self.update_objects, self.drawn_objects, self.enemy_objects)
         EnemySpawner.containers = (self.update_objects,)
-
-    def show_health(self) -> None:
-        font = pygame.font.Font(None, 20)
-        self.health_bar = pygame.sprite.Sprite()
-        self.health_bar.image = font.render(f"Health: {self.player.health}", 1, "red")
-        self.health_bar.rect = self.health_bar.image.get_rect(topleft=(10, 10))
-        # self.health_bar.draw()
+        HealthBar.containers = (self.update_objects, self.drawn_objects)
 
     def engine_draw(self) -> None:
         for x in self.drawn_objects:
             x.draw(self.screen)
-        self.show_health()
 
     def engine_logic(self) -> None:
         self.update()

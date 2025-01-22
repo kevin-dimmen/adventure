@@ -17,7 +17,11 @@ class Entity(pygame.sprite.Sprite):
     MOVEMENT_SPEED = 50
 
     def __init__(
-        self, x: Optional[int] = 0, y: Optional[int] = 0, radius: Optional[int] = 5, rotation: Optional[int] = 0
+        self,
+        x: Optional[int] = 0,
+        y: Optional[int] = 0,
+        radius: Optional[int] = 5,
+        rotation: Optional[int] = 0,
     ):
 
         # handle containers for this entity, TODO: fix later
@@ -47,7 +51,7 @@ class Entity(pygame.sprite.Sprite):
         target_angle = self.get_angle_to_vector(vector)
         self.rotation %= 360
         difference = (self.rotation - target_angle) % 360
-        if difference < 0.5:
+        if difference < 6:
             # skip any overcorrection and just set our angle appropriately
             self.rotation = target_angle
         else:

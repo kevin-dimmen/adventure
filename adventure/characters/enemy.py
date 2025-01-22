@@ -34,7 +34,7 @@ class Enemy(Character):
             self.move_forwards(dt)
             if self.is_facing_character(player):
                 if self.check_weapon_range(player):
-                    self.shoot(dt)
+                    self.use_weapon(dt)
         if self.engage_combat:
             # so far enemies remain in combat until death
             self.target_character(player, dt)

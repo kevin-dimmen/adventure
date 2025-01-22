@@ -19,6 +19,9 @@ class Firearm:
         self.firing_speed = self.FIRING_SPEED
         self.cooldown = 0
 
+    def use(self) -> None:
+        self.shoot()
+
     def shoot(self) -> None:
         if self.cooldown > 0:
             return

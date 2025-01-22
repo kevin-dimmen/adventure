@@ -25,6 +25,7 @@ class Player(Character):
 
         self.look_towards_mouse(dt)
 
+        # TODO don't compound movement speed when strafing
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
             self.move_forwards(dt)
@@ -36,7 +37,7 @@ class Player(Character):
             self.move_right(dt)
 
         if pygame.mouse.get_pressed()[0]:
-            self.shoot(dt)
+            self.use_weapon(dt)
 
     def look_towards_mouse(self, dt: int) -> None:
         self.rotate_towards(dt, self.get_mouse_position())
