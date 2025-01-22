@@ -5,7 +5,8 @@ from typing import Optional
 import pygame
 from loguru import logger
 
-from adventure.constants import COLOR_YELLOW
+from adventure.constants import COLOR_DARK_SLATE_GRAY
+from adventure.constants import COLOR_LIGHT_SLATE_GRAY
 from adventure.engine import Engine
 from adventure.exceptions import GameExit
 from adventure.exceptions import PlayerDied
@@ -17,7 +18,7 @@ from adventure.menus.button import Button
 class Game(Engine):
     """Main game menu."""
 
-    BACKGROUND_COLOR = COLOR_YELLOW
+    BACKGROUND_COLOR = COLOR_DARK_SLATE_GRAY
     TARGET_FPS = 15
 
     def __init__(self, screen: Optional[pygame.surface.Surface] = None) -> None:
@@ -31,7 +32,7 @@ class Game(Engine):
     def engine_setup(self) -> None:
         width, _ = pygame.display.get_window_size()
         center_width = width // 2
-        self.main_menu_text = get_main_font(100).render("MAIN MENU", True, "#b68f40")
+        self.main_menu_text = get_main_font(100).render("Adventure!", True, COLOR_LIGHT_SLATE_GRAY)
         self.main_menu_rectangle = self.main_menu_text.get_rect(center=(640, 100))
         self.play_button = Button(
             x=center_width,

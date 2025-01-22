@@ -42,10 +42,10 @@ class Entity(pygame.sprite.Sprite):
         """Draw this entity on the screen."""
         pygame.draw.circle(screen, self.color, self.position, self.radius)
 
-    def rotate(self, dt: int) -> None:
+    def rotate(self, dt: float) -> None:
         self.rotation += self.turn_speed * dt
 
-    def rotate_towards(self, dt: int, vector: pygame.Vector2) -> None:
+    def rotate_towards(self, dt: float, vector: pygame.Vector2) -> None:
         """Rotate towards a given angle, but don't get there unless we have enough time to get there."""
         max_rotation = self.turn_speed * dt
         target_angle = self.get_angle_to_vector(vector)

@@ -2,67 +2,60 @@
 Base class for any firearms.
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+from typing import Tuple
+
+import pygame
+
+from adventure.entities.entity import Entity
 from adventure.projectiles.projectile import Bullet9mm
 from adventure.projectiles.projectile import Bullet45cal
 from adventure.projectiles.projectile import Bullet556cal
-from adventure.projectiles.projectile import Projectile
+from adventure.projectiles.projectile import CannonBall
+from adventure.weapons.projectile_weapon import ProjectileWeapon
+
+if TYPE_CHECKING:
+    from adventure.characters.character import Character
 
 
-class Firearm:
+class Firearm(ProjectileWeapon):
     """A firearm usable by characters."""
 
-    BULLET_DAMAGE = 100
     FIRE_RATE = 0.3
     MAGAZINE_CAPACITY = 30
-    BULLET_TYPE = Bullet9mm
-
-    def __init__(self, wielder):
-        self.wielder = wielder
-        self.fire_rate = self.FIRE_RATE
-        self.magazine_capacity = self.MAGAZINE_CAPACITY
-        self.magazine_count = self.magazine_capacity  # start fully loaded
-        self.bullet_type = self.BULLET_TYPE
-        self.shot_cooldown = 0
-
-    def use(self) -> None:
-        self.shoot()
-
-    def shoot(self) -> None:
-        if self.shot_cooldown > 0:
-            return
-        self.bullet_type(
-            self.wielder.position.x,
-            self.wielder.position.y,
-            self.wielder.rotation,
-            self.wielder,
-        )
-        self.magazine_count -= 1
-        self.shot_cooldown = self.fire_rate
-
-    def update_cooldown(self, dt: int):
-        self.shot_cooldown -= dt
-
-    def get_max_range(self) -> int:
-        return self.bullet_type.MAX_RANGE
+    PROJECTILE_TYPE = Bullet9mm
 
 
 class Glock19(Firearm):
 
     FIRE_RATE = 0.5
+    COLOR = "green"
 
 
 class Colt1911(Firearm):
 
     FIRE_RATE = 0.8
-    BULLET_TYPE = Bullet45cal
+    PROJECTILE_TYPE = Bullet45cal
+    COLOR = "orange"
 
 
 class SMG(Firearm):
 
     FIRE_RATE = 0.075
+    COLOR = "white"
 
 
 class AR15(Firearm):
 
     FIRE_RATE = 0.11
-    BULLET_TYPE = Bullet556cal
+    PROJECTILE_TYPE = Bullet556cal
+    COLOR = "purple"
+
+
+class Cannon(Firearm):
+
+    FIRE_RATE = 2
+    PROJECTILE_TYPE = CannonBall
+    COLOR = "purple"

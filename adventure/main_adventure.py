@@ -3,6 +3,7 @@
 from typing import Optional
 
 import pygame
+from constants import COLOR_LIGHT_SLATE_GRAY
 from constants import SCREEN_HEIGHT
 from constants import SCREEN_WIDTH
 
@@ -12,10 +13,13 @@ from adventure.characters.player import Player
 from adventure.engine import Engine
 from adventure.hud.hud_elements import HealthBar
 from adventure.projectiles.projectile import Projectile
+from adventure.weapons.projectile_weapon import ProjectileWeapon
 
 
 class MainAdventure(Engine):
     """Main adventure game."""
+
+    BACKGROUND_COLOR = COLOR_LIGHT_SLATE_GRAY
 
     def __init__(self, screen: Optional[pygame.surface.Surface] = None) -> None:
         super().__init__(screen)
@@ -44,6 +48,7 @@ class MainAdventure(Engine):
         Enemy.containers = (self.update_objects, self.drawn_objects, self.enemy_objects)
         EnemySpawner.containers = (self.update_objects,)
         HealthBar.containers = (self.update_objects, self.drawn_objects)
+        ProjectileWeapon.containers = (self.update_objects, self.drawn_objects)
 
     def engine_draw(self) -> None:
         for x in self.drawn_objects:

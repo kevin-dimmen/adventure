@@ -47,7 +47,7 @@ class Projectile(Entity):
 class Bullet9mm(Projectile):
 
     MOVEMENT_SPEED = 500
-    SHOT_RADIUS = 3
+    SHOT_RADIUS = 2
     MAX_RANGE = 400
     DAMAGE_VALUE = 50
 
@@ -63,6 +63,22 @@ class Bullet45cal(Projectile):
 class Bullet556cal(Projectile):
 
     MOVEMENT_SPEED = 800
-    SHOT_RADIUS = 3
+    SHOT_RADIUS = 4
     MAX_RANGE = 700
     DAMAGE_VALUE = 150
+
+
+class Arrow(Projectile):
+
+    MOVEMENT_SPEED = 300
+    SHOT_RADIUS = 8
+    MAX_RANGE = 500
+    DAMAGE_VALUE = 500
+
+
+class CannonBall(Projectile):
+
+    MOVEMENT_SPEED = 175
+    SHOT_RADIUS = 25
+    MAX_RANGE = 1000
+    DAMAGE_VALUE = 1000

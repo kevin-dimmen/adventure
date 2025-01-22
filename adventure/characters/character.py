@@ -30,6 +30,9 @@ class Character(Entity):
         self.health = self.MAX_HEALTH
         self.weapon = Firearm(self)
 
+    def hand_position(self) -> pygame.Vector2:
+        return self.position + pygame.Vector2(0, -5)
+
     def triangle(self) -> Tuple[int, int, int]:
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
@@ -41,27 +44,27 @@ class Character(Entity):
     def draw(self, screen) -> None:
         pygame.draw.polygon(screen, self.color, self.triangle(), self.width)
 
-    def update(self, dt) -> None:
+    def update(self, dt: float) -> None:
         if self.weapon:
             self.weapon.update_cooldown(dt)
 
-    def move_forwards(self, dt) -> None:
+    def move_forwards(self, dt: float) -> None:
         velocity = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += velocity * self.movement_speed * dt
 
-    def move_backwards(self, dt) -> None:
+    def move_backwards(self, dt: float) -> None:
         velocity = pygame.Vector2(0, 1).rotate(self.rotation - 180)
-        self.position += velocity * self.movement_speed / 2 * dt
-
-    def move_left(self, dt) -> None:
-        velocity = pygame.Vector2(0, 1).rotate(self.rotation + 90)
         self.position += velocity * self.movement_speed / 1.5 * dt
 
-    def move_right(self, dt) -> None:
+    def move_left(self, dt: float) -> None:
         velocity = pygame.Vector2(0, 1).rotate(self.rotation - 90)
         self.position += velocity * self.movement_speed / 1.5 * dt
 
-    def use_weapon(self, dt: int) -> None:
+    def move_right(self, dt: float) -> None:
+        velocity = pygame.Vector2(0, 1).rotate(self.rotation + 90)
+        self.position += velocity * self.movement_speed / 1.5 * dt
+
+    def use_weapon(self, dt: float) -> None:
         if self.weapon:
             self.weapon.use()
 
@@ -72,7 +75,7 @@ class Character(Entity):
         angle_to_target = self.get_angle_to_vector(character.position)
         return abs(angle_to_target - self.rotation) < allowed_angle_buffer
 
-    def target_character(self, character: Character, dt: int) -> None:
+    def target_character(self, character: Character, dt: float) -> None:
         """Turn this character towards a given character."""
         if character is not self:
             self.rotate_towards(dt, character.position)
@@ -85,4 +88,7 @@ class Character(Entity):
 
     def die(self) -> None:
         logger.info(f"{self.__class__.__name__} @ {id(self)} dies")
+        weapon = self.weapon
+        self.weapon = None
+        weapon.kill()
         self.kill()

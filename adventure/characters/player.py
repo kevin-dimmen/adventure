@@ -20,7 +20,7 @@ class Player(Character):
         super().__init__(x, y, radius)
         self.weapon = AR15(self)
 
-    def update(self, dt) -> None:
+    def update(self, dt: float) -> None:
         super().update(dt)
 
         self.look_towards_mouse(dt)
@@ -39,7 +39,7 @@ class Player(Character):
         if pygame.mouse.get_pressed()[0]:
             self.use_weapon(dt)
 
-    def look_towards_mouse(self, dt: int) -> None:
+    def look_towards_mouse(self, dt: float) -> None:
         self.rotate_towards(dt, self.get_mouse_position())
 
     def kill(self) -> None:

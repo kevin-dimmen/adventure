@@ -7,8 +7,10 @@ import pygame
 
 from adventure.characters.character import Character
 from adventure.constants import COLOR_RED
+from adventure.weapons.arrow_weapon import ArrowWeapon
 from adventure.weapons.firearms import AR15
 from adventure.weapons.firearms import SMG
+from adventure.weapons.firearms import Cannon
 from adventure.weapons.firearms import Colt1911
 from adventure.weapons.firearms import Glock19
 
@@ -20,7 +22,7 @@ class Enemy(Character):
     TURN_SPEED = 80
     MOVEMENT_SPEED = 90
     COMBAT_RANGE = 500
-    AVAILABLE_FIREARMS = [Glock19, Colt1911, AR15, SMG]
+    AVAILABLE_FIREARMS = [Glock19, Colt1911, AR15, SMG, ArrowWeapon, Cannon]
 
     def __init__(
         self, x: Optional[int] = 0, y: Optional[int] = 0, radius: Optional[int] = None, rotation: Optional[int] = 0
@@ -30,7 +32,7 @@ class Enemy(Character):
         self.engage_combat = False
         self.weapon = random.choice(self.AVAILABLE_FIREARMS)(self)
 
-    def check_player(self, player: Character, dt: int) -> None:
+    def check_player(self, player: Character, dt: float) -> None:
         """Check our current status against the player."""
         if self.check_combat_range(player):
             self.engage_combat = True
