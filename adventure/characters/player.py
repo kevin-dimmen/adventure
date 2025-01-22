@@ -1,9 +1,11 @@
 """Handle the player character."""
 
-import pygame
-from adventure.characters.character import Character
-from typing import Tuple
 from typing import Optional
+from typing import Tuple
+
+import pygame
+
+from adventure.characters.character import Character
 
 PLAYER_SPEED = 200
 PLAYER_RADIUS = 20

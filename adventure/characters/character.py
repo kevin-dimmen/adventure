@@ -1,11 +1,12 @@
 """Handles base characters in the game."""
 
 from __future__ import annotations
+
 from typing import Optional
 
 from adventure.constants import COLOR_WHITE
-from adventure.projectiles.projectile import Projectile
 from adventure.entities.entity import Entity
+from adventure.projectiles.projectile import Projectile
 
 
 class Character(Entity):

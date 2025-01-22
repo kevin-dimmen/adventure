@@ -1,8 +1,12 @@
 """Main game."""
 
 import pygame
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH, COLOR_BLACK, TARGET_FPS
+from constants import COLOR_BLACK
+from constants import SCREEN_HEIGHT
+from constants import SCREEN_WIDTH
+from constants import TARGET_FPS
 from exceptions import GameExit
+
 from adventure.characters.player import Player
 from adventure.projectiles.projectile import Projectile
 
@@ -25,7 +29,7 @@ class Game:
         self.dt = 0
         self.setup_screen()
         self.setup_groups()
-        self.player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+        self.player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     def setup_screen(self) -> None:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))

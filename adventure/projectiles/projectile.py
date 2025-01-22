@@ -3,6 +3,7 @@ Base class for any projectiles.
 """
 
 import pygame
+
 from adventure.entities.entity import Entity
 
 

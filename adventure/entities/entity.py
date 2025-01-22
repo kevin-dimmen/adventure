@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
-import pygame
 from typing import Optional
+
+import pygame
+
 from adventure.constants import COLOR_WHITE
 
 
@@ -54,7 +56,7 @@ class Entity(pygame.sprite.Sprite):
     def get_angle_to_vector(self, vector: pygame.Vector2) -> float:
         """Return the polar angle from the current entity to a given vector."""
         self_to_vector = (vector - self.position).normalize()
-        polar_angle = self_to_vector.as_polar()[1]-90
+        polar_angle = self_to_vector.as_polar()[1] - 90
         return polar_angle % 360
 
     def get_angle_to_mouse(self) -> float:
