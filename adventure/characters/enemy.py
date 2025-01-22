@@ -4,11 +4,13 @@ import random
 from typing import Optional
 
 import pygame
-from loguru import logger
 
 from adventure.characters.character import Character
 from adventure.constants import COLOR_RED
-from adventure.weapons.firearms import Pistol
+from adventure.weapons.firearms import AR15
+from adventure.weapons.firearms import SMG
+from adventure.weapons.firearms import Colt1911
+from adventure.weapons.firearms import Glock19
 
 
 class Enemy(Character):
@@ -18,6 +20,7 @@ class Enemy(Character):
     TURN_SPEED = 80
     MOVEMENT_SPEED = 90
     COMBAT_RANGE = 500
+    AVAILABLE_FIREARMS = [Glock19, Colt1911, AR15, SMG]
 
     def __init__(
         self, x: Optional[int] = 0, y: Optional[int] = 0, radius: Optional[int] = None, rotation: Optional[int] = 0
@@ -25,7 +28,7 @@ class Enemy(Character):
         super().__init__(x, y, radius, rotation)
         self.combat_range = self.COMBAT_RANGE
         self.engage_combat = False
-        self.weapon = Pistol(self)
+        self.weapon = random.choice(self.AVAILABLE_FIREARMS)(self)
 
     def check_player(self, player: Character, dt: int) -> None:
         """Check our current status against the player."""
@@ -47,7 +50,7 @@ class Enemy(Character):
     def check_weapon_range(self, player: Character) -> bool:
         """Check is we are within combat range of the player."""
         distance_to_player = self.position.distance_to(player.position)
-        return distance_to_player <= self.weapon.bullet_range
+        return distance_to_player <= self.weapon.get_max_range()
 
 
 class EnemySpawner(pygame.sprite.Sprite):

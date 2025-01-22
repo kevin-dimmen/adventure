@@ -6,7 +6,7 @@ import pygame
 
 from adventure.characters.character import Character
 from adventure.exceptions import PlayerDied
-from adventure.weapons.firearms import SMG
+from adventure.weapons.firearms import AR15
 
 
 class Player(Character):
@@ -18,7 +18,7 @@ class Player(Character):
 
     def __init__(self, x: Optional[int] = 0, y: Optional[int] = 0, radius: Optional[int] = None):
         super().__init__(x, y, radius)
-        self.weapon = SMG(self)
+        self.weapon = AR15(self)
 
     def update(self, dt) -> None:
         super().update(dt)

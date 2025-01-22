@@ -12,7 +12,7 @@ class Projectile(Entity):
 
     MOVEMENT_SPEED = 500
     SHOT_RADIUS = 5
-    SHOT_RANGE = 350
+    MAX_RANGE = 350
     DAMAGE_VALUE = 50
 
     def __init__(self, x, y, rotation, shooter):
@@ -20,7 +20,7 @@ class Projectile(Entity):
         self.velocity = pygame.Vector2(0, 1).rotate(rotation)
         self.velocity *= self.MOVEMENT_SPEED
         self.origin = pygame.Vector2(x, y)
-        self.range = self.SHOT_RANGE
+        self.range = self.MAX_RANGE
         self.shooter = shooter
         self.damage_value = self.DAMAGE_VALUE
 
@@ -42,3 +42,27 @@ class Projectile(Entity):
         if self.check_collision(other):
             other.receive_damage(self)
             self.kill()
+
+
+class Bullet9mm(Projectile):
+
+    MOVEMENT_SPEED = 500
+    SHOT_RADIUS = 3
+    MAX_RANGE = 400
+    DAMAGE_VALUE = 50
+
+
+class Bullet45cal(Projectile):
+
+    MOVEMENT_SPEED = 400
+    SHOT_RADIUS = 5
+    MAX_RANGE = 350
+    DAMAGE_VALUE = 80
+
+
+class Bullet556cal(Projectile):
+
+    MOVEMENT_SPEED = 800
+    SHOT_RADIUS = 3
+    MAX_RANGE = 700
+    DAMAGE_VALUE = 150

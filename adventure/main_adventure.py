@@ -10,8 +10,8 @@ from adventure.characters.enemy import Enemy
 from adventure.characters.enemy import EnemySpawner
 from adventure.characters.player import Player
 from adventure.engine import Engine
-from adventure.projectiles.projectile import Projectile
 from adventure.hud.hud_elements import HealthBar
+from adventure.projectiles.projectile import Projectile
 
 
 class MainAdventure(Engine):

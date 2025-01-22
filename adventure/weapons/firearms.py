@@ -2,6 +2,9 @@
 Base class for any firearms.
 """
 
+from adventure.projectiles.projectile import Bullet9mm
+from adventure.projectiles.projectile import Bullet45cal
+from adventure.projectiles.projectile import Bullet556cal
 from adventure.projectiles.projectile import Projectile
 
 
@@ -9,38 +12,57 @@ class Firearm:
     """A firearm usable by characters."""
 
     BULLET_DAMAGE = 100
-    BULLET_RANGE = 100
-    FIRING_SPEED = 0.3
+    FIRE_RATE = 0.3
+    MAGAZINE_CAPACITY = 30
+    BULLET_TYPE = Bullet9mm
 
     def __init__(self, wielder):
         self.wielder = wielder
-        self.bullet_damage = self.BULLET_DAMAGE
-        self.bullet_range = self.BULLET_RANGE
-        self.firing_speed = self.FIRING_SPEED
-        self.cooldown = 0
+        self.fire_rate = self.FIRE_RATE
+        self.magazine_capacity = self.MAGAZINE_CAPACITY
+        self.magazine_count = self.magazine_capacity  # start fully loaded
+        self.bullet_type = self.BULLET_TYPE
+        self.shot_cooldown = 0
 
     def use(self) -> None:
         self.shoot()
 
     def shoot(self) -> None:
-        if self.cooldown > 0:
+        if self.shot_cooldown > 0:
             return
-        Projectile(self.wielder.position.x, self.wielder.position.y, self.wielder.rotation, self.wielder)
-        self.cooldown = self.firing_speed
+        self.bullet_type(
+            self.wielder.position.x,
+            self.wielder.position.y,
+            self.wielder.rotation,
+            self.wielder,
+        )
+        self.magazine_count -= 1
+        self.shot_cooldown = self.fire_rate
 
     def update_cooldown(self, dt: int):
-        self.cooldown -= dt
+        self.shot_cooldown -= dt
+
+    def get_max_range(self) -> int:
+        return self.bullet_type.MAX_RANGE
 
 
-class Pistol(Firearm):
+class Glock19(Firearm):
 
-    BULLET_DAMAGE = 75
-    BULLET_RANGE = 200
-    FIRING_SPEED = 0.5
+    FIRE_RATE = 0.5
+
+
+class Colt1911(Firearm):
+
+    FIRE_RATE = 0.8
+    BULLET_TYPE = Bullet45cal
 
 
 class SMG(Firearm):
 
-    BULLET_DAMAGE = 85
-    BULLET_RANGE = 400
-    FIRING_SPEED = 0.075
+    FIRE_RATE = 0.075
+
+
+class AR15(Firearm):
+
+    FIRE_RATE = 0.11
+    BULLET_TYPE = Bullet556cal

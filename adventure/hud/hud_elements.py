@@ -6,10 +6,10 @@ from typing import Optional
 
 import pygame
 
-from adventure.constants import COLOR_RED
-from adventure.fonts.fonts import get_main_font
-from adventure.entities.entity import Entity
 from adventure.characters.player import Player
+from adventure.constants import COLOR_RED
+from adventure.entities.entity import Entity
+from adventure.fonts.fonts import get_main_font
 
 
 class HeadsUpDisplayElement(Entity):
