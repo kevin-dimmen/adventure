@@ -41,3 +41,4 @@ class Projectile(Entity):
             return
         if self.check_collision(other):
             other.receive_damage(self)
+            self.kill()

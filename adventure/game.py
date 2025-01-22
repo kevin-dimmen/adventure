@@ -1,84 +1,82 @@
-"""Main game."""
+"""Main entry point for the game. Runs the main menu to start everything."""
+
+from typing import Optional
 
 import pygame
-from constants import COLOR_BLACK
-from constants import SCREEN_HEIGHT
-from constants import SCREEN_WIDTH
-from constants import TARGET_FPS
-from exceptions import GameExit
 from loguru import logger
 
-from adventure.characters.enemy import Enemy
-from adventure.characters.enemy import EnemySpawner
-from adventure.characters.player import Player
-from adventure.projectiles.projectile import Projectile
+from adventure.constants import COLOR_YELLOW
+from adventure.engine import Engine
+from adventure.exceptions import GameExit
+from adventure.exceptions import PlayerDied
+from adventure.fonts.fonts import get_main_font
+from adventure.main_adventure import MainAdventure
+from adventure.menus.button import Button
 
 
-class Game:
-    """Main game."""
+class Game(Engine):
+    """Main game menu."""
 
-    def __init__(self) -> None:
-        self.screen = None
-        self.clock = None
-        self.dt = 0
-        self.update_objects = None
-        self.drawn_objects = None
-        self.projectile_objects = None
-        self.enemy_objects = None
-        self.player = None
+    BACKGROUND_COLOR = COLOR_YELLOW
+    TARGET_FPS = 15
 
-    def setup(self) -> None:
-        pygame.init()
-        self.clock = pygame.time.Clock()
-        self.dt = 0
-        self.setup_screen()
+    def __init__(self, screen: Optional[pygame.surface.Surface] = None) -> None:
+        super().__init__(screen)
+        self.main_menu_text = None
+        self.main_menu_rectangle = None
+        self.play_button = None
+        self.quit_button = None
+        self.clickable_objects = None
+
+    def engine_setup(self) -> None:
+        width, _ = pygame.display.get_window_size()
+        center_width = width // 2
+        self.main_menu_text = get_main_font(100).render("MAIN MENU", True, "#b68f40")
+        self.main_menu_rectangle = self.main_menu_text.get_rect(center=(640, 100))
+        self.play_button = Button(
+            x=center_width,
+            y=200,
+            text="PLAY",
+            color="Black",
+            hover_color="White",
+            font=get_main_font(50),
+        )
+        self.quit_button = Button(
+            x=center_width,
+            y=300,
+            text="QUIT",
+            color="Black",
+            hover_color="White",
+            font=get_main_font(50),
+        )
         self.setup_groups()
-        self.player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-        EnemySpawner(SCREEN_WIDTH, SCREEN_HEIGHT)
-
-    def setup_screen(self) -> None:
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption("Adventure!")
 
     def setup_groups(self) -> None:
-        self.update_objects = pygame.sprite.Group()
-        self.drawn_objects = pygame.sprite.Group()
-        self.projectile_objects = pygame.sprite.Group()
-        self.enemy_objects = pygame.sprite.Group()
-        Player.containers = (self.update_objects, self.drawn_objects)
-        Projectile.containers = (self.update_objects, self.drawn_objects, self.projectile_objects)
-        Enemy.containers = (self.update_objects, self.drawn_objects, self.enemy_objects)
-        EnemySpawner.containers = (self.update_objects,)
+        self.clickable_objects = pygame.sprite.Group()
+        Button.containers = (self.clickable_objects,)
 
-    def tick(self) -> None:
-        self.dt = self.clock.tick(TARGET_FPS) / 1000
+    def engine_draw(self) -> None: ...
 
-    def update(self) -> None:
-        for updateable in self.update_objects:
-            updateable.update(self.dt)
-        for enemy in self.enemy_objects:
-            enemy.check_player(self.player, self.dt)
-        for projectile in self.projectile_objects:
-            projectile.check_range()
-            if projectile.check_hit(self.player):
-                self.player.kill()
-            for enemy in self.enemy_objects:
-                if projectile.check_hit(enemy):
-                    enemy.kill()
+    def engine_logic(self) -> None:
+        """Display the main menu and allow the user to select what to do."""
+        self.screen.blit(self.main_menu_text, self.main_menu_rectangle)
 
-    def draw_screen(self) -> None:
-        self.screen.fill(COLOR_BLACK)
-        for x in self.drawn_objects:
-            x.draw(self.screen)
-        pygame.display.flip()
+        # for button in self.clickable_objects:
+        for button in [self.play_button, self.quit_button]:
+            button.change_color_on_hover()
+            button.update(self.screen)
 
-    def run(self) -> None:
-        """Run the game and exit when we need to."""
-        while True:
-            self.update()
-            self.draw_screen()
-            self.tick()
-            self.check_for_exit()
+        if self.play_button.is_clicked():
+            self.adventure()
+        if self.quit_button.is_clicked():
+            pygame.quit()
+            raise GameExit()
+
+    def adventure(self) -> None:
+        try:
+            MainAdventure().start()
+        except PlayerDied:
+            logger.info("Returning to main menu")
 
     def start(self) -> None:
         self.setup()
@@ -89,7 +87,6 @@ class Game:
         self.clean_up()
 
     def clean_up(self) -> None:
-        self.player.kill()
         pygame.quit()
 
     def check_for_exit(self) -> None:

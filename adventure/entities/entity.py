@@ -13,10 +13,12 @@ class Entity(pygame.sprite.Sprite):
     """Base class for any entity in the game."""
 
     COLOR = COLOR_WHITE
-    TURN_SPEED = 20
+    TURN_SPEED = 30
     MOVEMENT_SPEED = 50
 
-    def __init__(self, x: Optional[int] = 0, y: Optional[int] = 0, radius: Optional[int] = 5):
+    def __init__(
+        self, x: Optional[int] = 0, y: Optional[int] = 0, radius: Optional[int] = 5, rotation: Optional[int] = 0
+    ):
 
         # handle containers for this entity, TODO: fix later
         if hasattr(self, "containers"):
@@ -27,7 +29,7 @@ class Entity(pygame.sprite.Sprite):
         self.position = pygame.Vector2(x, y)
         self.movement_speed = self.MOVEMENT_SPEED
         self.radius = radius
-        self.rotation = 0
+        self.rotation = rotation
         self.color = self.COLOR
         self.turn_speed = self.TURN_SPEED
         self.width = 2

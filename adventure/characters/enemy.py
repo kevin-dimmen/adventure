@@ -19,8 +19,10 @@ class Enemy(Character):
     MOVEMENT_SPEED = 90
     COMBAT_RANGE = 500
 
-    def __init__(self, x: Optional[int] = 0, y: Optional[int] = 0, radius: Optional[int] = None):
-        super().__init__(x, y, radius)
+    def __init__(
+        self, x: Optional[int] = 0, y: Optional[int] = 0, radius: Optional[int] = None, rotation: Optional[int] = 0
+    ):
+        super().__init__(x, y, radius, rotation)
         self.combat_range = self.COMBAT_RANGE
         self.engage_combat = False
         self.weapon = Pistol(self)
@@ -50,10 +52,9 @@ class Enemy(Character):
 
 class EnemySpawner(pygame.sprite.Sprite):
 
-    SPAWN_RATE = 0.9
+    SPAWN_RATE = 1.5
 
     def __init__(self, screen_width: int, screen_height: int) -> None:
-        logger.info(self.containers)
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.spawn_rate = self.SPAWN_RATE
         self.spawn_timer = 0
@@ -61,7 +62,7 @@ class EnemySpawner(pygame.sprite.Sprite):
         self.screen_height = screen_height
 
     def spawn(self):
-        Enemy(random.randrange(self.screen_width), random.randrange(self.screen_height))
+        Enemy(random.randrange(self.screen_width), random.randrange(self.screen_height), rotation=random.randrange(360))
 
     def update(self, dt):
         self.spawn_timer += dt

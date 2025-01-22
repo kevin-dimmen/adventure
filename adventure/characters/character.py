@@ -21,8 +21,10 @@ class Character(Entity):
     MOVEMENT_SPEED = 150
     MAX_HEALTH = 100
 
-    def __init__(self, x: Optional[int] = 0, y: Optional[int] = 0, radius: Optional[int] = None):
-        super().__init__(x, y, radius if radius is not None else self.DEFAULT_RADIUS)
+    def __init__(
+        self, x: Optional[int] = 0, y: Optional[int] = 0, radius: Optional[int] = None, rotation: Optional[int] = 0
+    ):
+        super().__init__(x, y, radius if radius is not None else self.DEFAULT_RADIUS, rotation)
         self.shot_cooldown = 0
         self.shot_cooldown_interval = 0.3
         self.health = self.MAX_HEALTH
@@ -78,8 +80,9 @@ class Character(Entity):
             self.rotate_towards(dt, character.position)
 
     def receive_damage(self, projectile) -> None:
+        logger.info(f"{self.health=} {projectile.get_damage()=}")
         self.health -= projectile.get_damage()
-        if self.health < 0:
+        if self.health <= 0:
             self.die()
 
     def die(self) -> None:

@@ -5,7 +5,7 @@ from typing import Optional
 import pygame
 
 from adventure.characters.character import Character
-from adventure.exceptions import GameExit
+from adventure.exceptions import PlayerDied
 from adventure.weapons.firearms import SMG
 
 
@@ -43,4 +43,4 @@ class Player(Character):
 
     def kill(self) -> None:
         super().kill()
-        raise GameExit()
+        raise PlayerDied()

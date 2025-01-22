@@ -30,13 +30,14 @@ class Firearm:
 
 
 class Pistol(Firearm):
+
     BULLET_DAMAGE = 75
-    BULLET_RANGE = 100
+    BULLET_RANGE = 200
     FIRING_SPEED = 0.5
 
 
 class SMG(Firearm):
 
     BULLET_DAMAGE = 85
-    BULLET_RANGE = 225
+    BULLET_RANGE = 400
     FIRING_SPEED = 0.075
