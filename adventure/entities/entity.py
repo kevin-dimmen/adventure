@@ -13,6 +13,8 @@ class Entity(pygame.sprite.Sprite):
     """Base class for any entity in the game."""
 
     COLOR = COLOR_WHITE
+    TURN_SPEED = 20
+    MOVEMENT_SPEED = 50
 
     def __init__(self, x: Optional[int] = 0, y: Optional[int] = 0, radius: Optional[int] = 5):
 
@@ -23,11 +25,11 @@ class Entity(pygame.sprite.Sprite):
             super().__init__()
 
         self.position = pygame.Vector2(x, y)
-        self.velocity = pygame.Vector2(0, 0)
+        self.movement_speed = self.MOVEMENT_SPEED
         self.radius = radius
         self.rotation = 0
         self.color = self.COLOR
-        self.turn_speed = 300
+        self.turn_speed = self.TURN_SPEED
         self.width = 2
 
     def draw(self, screen) -> None:
@@ -50,8 +52,7 @@ class Entity(pygame.sprite.Sprite):
             direction = 1 if difference > 180 else -1
             self.rotation += max_rotation * direction
 
-    def update(self, dt) -> None:
-        self.position += self.velocity * dt
+    def update(self, dt) -> None: ...
 
     def get_angle_to_vector(self, vector: pygame.Vector2) -> float:
         """Return the polar angle from the current entity to a given vector."""
